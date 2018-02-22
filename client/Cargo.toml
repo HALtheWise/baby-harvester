@@ -1,0 +1,8 @@
+[package]
+name = "client"
+version = "0.1.0"
+authors = ["Eric Miller <eric@legoaces.org>"]
+
+[dependencies]
+
+rumqtt = "0.10.1"
