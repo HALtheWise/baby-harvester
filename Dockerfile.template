@@ -12,7 +12,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 COPY . /usr/src/app
 
-RUN cd $HOME/baby-harvester/client \
+RUN cd client \
     $HOME/.cargo/bin/cargo build
 
 CMD ./target/debug/resin-rust-hello-world
