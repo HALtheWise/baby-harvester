@@ -2,13 +2,13 @@ FROM resin/%%RESIN_MACHINE_NAME%%-debian
 
 ENV INITSYSTEM on
 
-RUN apt-get -q update && apt-get install -yq -f libssl-dev \
+RUN apt-get -q update && apt-get install -yq -f apt-utils libssl-dev \
 	build-essential curl file \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-RUN curl -sSf https://static.rust-lang.org/rustup.sh | sh
+RUN curl https://sh.rustup.rs -sSf | sh
 
 COPY . /usr/src/app
 
