@@ -17,7 +17,7 @@ RUN cd client \
 
 FROM petrosagg/resin-wpe:raspberrypi0-669edb1-dirty
 
-COPY --from=compiler .client/target/debug/client .client/target/debug/client
+# COPY --from=compiler .client/target/debug/client .client/target/debug/client
 
 COPY udev-rules/ /etc/udev/rules.d/
 
