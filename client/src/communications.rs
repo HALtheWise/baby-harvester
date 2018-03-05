@@ -1,20 +1,46 @@
 extern crate rumqtt;
 extern crate reqwest;
 
-use rumqtt::{MqttOptions, MqttClient};
+use rumqtt::{MqttOptions, MqttClient, MqttCallback, QoS};
 use communications::reqwest::header::{Authorization, Basic};
 use std::env;
+use std::thread;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
-pub fn mqtt() -> MqttClient{
+pub fn mqtt() {
+    let mqtt_user = match env::var("MQTT_USER") {
+        Ok(val) => val,
+        Err(e) => {println!("could not find mqtt user: {}", e); return},
+    };
+    let mqtt_pass = match env::var("MQTT_PASS") {
+        Ok(val) => val,
+        Err(e) => {println!("could not find mqtt pass: {}", e); return},
+    };
+    let dev_name = match env::var("DEVICE_NAME") {
+        Ok(val) => val,
+        Err(e) => {println!("could not find device name: {}", e); return},
+    };
     let client_options = MqttOptions::new()
-        .set_keep_alive(5)
-        .set_reconnect(2)
-        .set_client_id("baby-harvester-client")
-        .set_broker("test.mosquitto.org:1883");
+        .set_reconnect(5)
+        .set_broker("llama.rmq.cloudamqp.com:1833")
+        .set_user_name(&mqtt_user)
+        .set_password(&mqtt_pass);
 
-    let mq = MqttClient::start(client_options, None);
+    let count = Arc::new(AtomicUsize::new(0));
+    let count = count.clone();
 
-    mq.expect("Unable to start mq client")
+    let counter_cb = move |message| {
+        count.fetch_add(1, Ordering::SeqCst);
+        println!("message --> {:?}", message);
+    };
+
+    let msg_callback = MqttCallback::new().on_message(counter_cb);
+
+    let mut request = MqttClient::start(client_options, Some(msg_callback)).expect("Coudn't start");
+    //let print_channel = format!("{}/print/text", &dev_name);
+    let topics = vec![("harvey/print/text", QoS::Level0)];
+    request.subscribe(topics).expect("Subcription failure");
 }
 
 pub fn change_token() {
@@ -31,7 +57,7 @@ pub fn change_token() {
         username: user,
         password: Some(passwd),
     };
-    let mut response = client.get("https://baby-harvester-gateway.herokuapp.com/changetoken")
+    let response = client.get("https://baby-harvester-gateway.herokuapp.com/changetoken")
         .header(Authorization(credentials))
         .send()
         .expect("Failed to send request");

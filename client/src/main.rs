@@ -12,15 +12,11 @@ use rumqtt::QoS;
 
 fn main() {
     println!("Hello, world!");
-    let payload = String::from("{}. hello rust");
 
-    let mut mq = communications::mqtt();
+    communications::mqtt();
 
-    mq.publish("hello/rust", QoS::Level1, payload.into_bytes())
-         .expect("Publish failure");
-
-    test_gpio();
-    test_printer();
+    //test_gpio();
+    //test_printer();
 //    test_screen();
     communications::change_token();
 }
