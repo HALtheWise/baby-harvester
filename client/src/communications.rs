@@ -21,11 +21,11 @@ pub fn change_token() {
     let client = reqwest::Client::new();
     let user = match env::var("DEVICE_NAME") {
         Ok(val) => val,
-        Err(e) => panic!("could not find device name: {}", e),
+        Err(e) => {println!("could not find device name: {}", e); return},
     };
     let passwd = match env::var("APP_SECRET") {
         Ok(val) => val,
-        Err(e) => panic!("could not find app secret: {}", e),
+        Err(e) => {println!("could not find app secret: {}", e); return},
     };
     let credentials = Basic {
         username: user,

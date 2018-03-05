@@ -20,7 +20,7 @@ fn main() {
          .expect("Publish failure");
 
     test_gpio();
-//    test_printer();
+    test_printer();
 //    test_screen();
     communications::change_token();
 }
@@ -39,7 +39,9 @@ fn test_gpio() {
 }
 
 fn test_printer() {
-    printer::print_text("Hello World");
+//    let mut print = printer::Printer::new();
+//    print.print_text("Hello World");
+    printer::test();
 }
 
 fn test_screen() {
