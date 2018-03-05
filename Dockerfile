@@ -14,6 +14,8 @@ RUN curl https://sh.rustup.rs -sSf | sh -s --  -y
 
 COPY . /usr/src/app
 
+RUN apt-get install pkg-config
+
 RUN cd client && \
     $HOME/.cargo/bin/cargo build
 
