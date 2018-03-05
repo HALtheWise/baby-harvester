@@ -2,7 +2,7 @@
 
 set -o errexit
 
-export MACHINE=${MACHINE:-raspberrypi3}
+export MACHINE=${MACHINE:-raspberrypi0}
 
 export TEMPLATECONF="../meta-resin-wpe/conf/samples"
 source poky/oe-init-build-env build
