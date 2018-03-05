@@ -15,8 +15,6 @@ COPY . /usr/src/app
 RUN cd client \
     $HOME/.cargo/bin/cargo build
 
-CMD ./target/debug/resin-rust-hello-world
-
 FROM petrosagg/resin-wpe:raspberrypi3-06da0ed
 
 COPY udev-rules/ /etc/udev/rules.d/
@@ -25,6 +23,6 @@ COPY wpe-init /wpe-init
 
 CMD [ "/wpe-init" ]
 
-COPY celinabekins.com
+COPY public_html /var/lib/public_html
 
-ENV WPE_URL="file:///var/lib/celinabekins.com/index.html"
+ENV WPE_URL="file:///var/lib/public_html/index.html"
