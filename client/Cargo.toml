@@ -6,3 +6,4 @@ authors = ["Eric Miller <eric@legoaces.org>"]
 [dependencies]
 
 rumqtt = "0.10.1"
+rppal = "0.2.0"

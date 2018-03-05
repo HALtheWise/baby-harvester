@@ -20,11 +20,12 @@ fn main() {
          .expect("Publish failure");
 
     test_gpio();
-    test_printer();
-    test_screen();
+//    test_printer();
+//    test_screen();
 }
 
 fn test_gpio() {
+    gpio::setup();
     gpio::set_light(true);
     gpio::set_bell(true);
     thread::sleep(Duration::from_millis(1000));
