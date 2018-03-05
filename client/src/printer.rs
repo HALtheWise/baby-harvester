@@ -12,27 +12,25 @@ use printer::serial::prelude::*;
 const SERIAL_NAME:&str = "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0";
 
 
-pub fn test() {
-    let mut port = serial::open(SERIAL_NAME).unwrap();
-    interact(&mut port).unwrap();
+pub fn get_printer() -> serial::SystemPort {
+    serial::open(SERIAL_NAME).unwrap()
 }
 
-fn interact<T: SerialPort>(port: &mut T) -> io::Result<()> {
-    try!(port.reconfigure(&|settings| {
-        try!(settings.set_baud_rate(serial::Baud9600));
+pub fn print_text<T: SerialPort>(port: &mut T, text: &str) -> io::Result<()> {
+    port.reconfigure(&|settings| {
+        settings.set_baud_rate(serial::Baud9600)?;
         settings.set_char_size(serial::Bits8);
         settings.set_parity(serial::ParityNone);
         settings.set_stop_bits(serial::Stop1);
         settings.set_flow_control(serial::FlowNone);
         Ok(())
-    }));
+    })?;
 
-    try!(port.set_timeout(Duration::from_millis(1000)));
+    port.set_timeout(Duration::from_millis(1000))?;
 
-    let mut buf: Vec<u8> = (0..255).collect();
+    port.write(text.as_bytes())?;
 
-    try!(port.write(&buf[..]));
-    try!(port.read(&mut buf[..]));
+    port.write(b"\n\n\n\n\n")?;
 
     Ok(())
 }

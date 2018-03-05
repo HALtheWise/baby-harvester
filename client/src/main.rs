@@ -41,7 +41,9 @@ fn test_gpio() {
 fn test_printer() {
 //    let mut print = printer::Printer::new();
 //    print.print_text("Hello World");
-    printer::test();
+//    printer::test();
+    let mut print = printer::get_printer();
+    printer::print_text(&mut print,"Baby Harvester Active");
 }
 
 fn test_screen() {
