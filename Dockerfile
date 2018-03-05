@@ -1,4 +1,4 @@
-FROM resin/raspberrypi-debian
+FROM petrosagg/resin-wpe:raspberrypi0-669edb1-dirty
 
 ENV INITSYSTEM on
 
@@ -14,8 +14,6 @@ COPY . /usr/src/app
 
 RUN cd client \
     $HOME/.cargo/bin/cargo build
-
-FROM petrosagg/resin-wpe:raspberrypi3-06da0ed
 
 COPY udev-rules/ /etc/udev/rules.d/
 

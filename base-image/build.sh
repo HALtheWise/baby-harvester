@@ -1,20 +1,20 @@
 #!/bin/bash
-#modifications taken from https://www.snip2code.com/Snippet/3301030/Building-WPE-with-Yocto-for-Raspberry-Pi
 
 set -o errexit
 
-export MACHINE= "raspberrypi0-wifi"
+export MACHINE=${MACHINE:-raspberrypi3}
 
-DISTRO_FEATURES_remove = "x11"
-DISTRO_FEATURES_append = "opengl"
-__EOF__
-bitbake wpe-westeros-image
+export TEMPLATECONF="../meta-resin-wpe/conf/samples"
+source poky/oe-init-build-env build
 
-source poky/oe-init-build-env
-bitbake-layers add-layer ../meta-openembedded/meta-oe
-bitbake-layers add-layer ../meta-openembedded/meta-python
-bitbake-layers add-layer ../meta-openembedded/meta-multimedia
-bitbake-layers add-layer ../meta-openembedded/meta-networking
-bitbake-layers add-layer ../meta-raspberrypi
-bitbake-layers add-layer ../meta-wpe
-cat <<'__EOF__' >> conf/local.conf
+bitbake resin-wpe-image
+
+VERSION=$(git describe --dirty --always)
+IMAGE="resin-wpe:$MACHINE-$VERSION"
+
+docker import - $IMAGE < tmp-glibc/deploy/images/$MACHINE/resin-wpe-image-$MACHINE.tar.gz
+
+echo
+echo "#####################################"
+echo "Created docker image: $IMAGE"
+echo "#####################################"
