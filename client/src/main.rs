@@ -25,15 +25,16 @@ fn main() {
 }
 
 fn test_gpio() {
-    gpio::setup();
-    gpio::set_light(true);
-    gpio::set_bell(true);
+    let mut io = gpio::GPIOHandler::new();
+    io.set_light(true);
+    io.set_bell(true);
     thread::sleep(Duration::from_millis(1000));
-    gpio::set_light(false);
-    gpio::set_bell(false);
+    io.set_light(false);
+    io.set_bell(false);
     thread::sleep(Duration::from_millis(1000));
 
-    gpio::set_light(gpio::get_button());
+//    let button_state =io.get_button();
+//    io.set_light(button_state);
 }
 
 fn test_printer() {
