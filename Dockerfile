@@ -1,4 +1,4 @@
-FROM resin/%%raspberrypi%%-debian
+FROM resin/raspberrypi-debian
 
 ENV INITSYSTEM on
 
