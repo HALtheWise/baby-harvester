@@ -17,4 +17,4 @@ COPY . /usr/src/app
 RUN cd client && \
     $HOME/.cargo/bin/cargo build
 
-CMD .client/target/debug/client
+CMD /usr/src/app/client/target/debug/client
