@@ -54,14 +54,14 @@ impl GPIOHandler {
     }
 
     pub fn set_light(&self, on: bool){
-//        match self.gpio {
-//            Some(gpio)=>{
-//                gpio.write(LED_PIN, match on{true=>Level::High,false=>Level::Low})
-//            },
-//            None=>{
-//                println!("Pretend I'm turning {} the light!", match on { true=>"on", false=>"off"})
-//            }
-//        }
+        match &self.gpio {
+            &Some(ref gpio)=>{
+                gpio.write(LED_PIN, match on{true=>Level::High,false=>Level::Low})
+            },
+            &None=>{
+                println!("Pretend I'm turning {} the light!", match on { true=>"on", false=>"off"})
+            }
+        }
         return;
     }
 
