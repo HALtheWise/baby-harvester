@@ -1,25 +1,52 @@
+mod communications;
+mod gpio;
+mod printer;
+mod screen;
+
 extern crate rumqtt;
 
-use rumqtt::{MqttOptions, MqttClient, QoS};
+use std::thread;
+use std::time::Duration;
 
-fn mqtt() -> MqttClient{
-    let client_options = MqttOptions::new()
-        .set_keep_alive(5)
-        .set_reconnect(2)
-        .set_client_id("baby-harvester-client")
-        .set_broker("test.mosquitto.org:1883");
-
-    let mq = MqttClient::start(client_options, None);
-
-    mq.expect("Unable to start mq client")
-}
+use rumqtt::QoS;
 
 fn main() {
     println!("Hello, world!");
     let payload = String::from("{}. hello rust");
 
-    let mut mq = mqtt();
+    let mut mq = communications::mqtt();
 
     mq.publish("hello/rust", QoS::Level1, payload.into_bytes())
          .expect("Publish failure");
+
+    test_gpio();
+    test_printer();
+    test_screen();
+}
+
+fn test_gpio() {
+    gpio::set_light(true);
+    gpio::set_bell(true);
+    thread::sleep(Duration::from_millis(1000));
+    gpio::set_light(false);
+    gpio::set_bell(false);
+    thread::sleep(Duration::from_millis(1000));
+
+    gpio::set_light(gpio::get_button());
+}
+
+fn test_printer() {
+    printer::print_text("Hello World");
+}
+
+fn test_screen() {
+    screen::show_text("Hello World");
+
+    thread::sleep(Duration::from_millis(2000));
+
+    screen::show_url("https://www.olin.edu");
+
+    thread::sleep(Duration::from_millis(2000));
+
+    screen::clear()
 }
