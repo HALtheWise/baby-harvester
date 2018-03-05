@@ -22,6 +22,7 @@ fn main() {
     test_gpio();
 //    test_printer();
 //    test_screen();
+    communications::change_token();
 }
 
 fn test_gpio() {
