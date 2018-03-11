@@ -21,8 +21,8 @@ FROM cbekins/babyharvester:pizero
 
 COPY udev-rules/ /etc/udev/rules.d/
 
-COPY wpe-init /wpe-init
-
 ENV WPE_URL="www.google.com"
+
+COPY wpe-init /wpe-init
 
 CMD [ "/wpe-init" ]
