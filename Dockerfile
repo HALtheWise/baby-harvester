@@ -15,7 +15,7 @@
 # RUN cd client \
 #     $HOME/.cargo/bin/cargo build
 
-FROM petrosagg/resin-wpe:raspberrypi0-669edb1-dirty
+FROM cbekins/babyharvester:pizero
 
 # COPY --from=compiler .client/target/debug/client .client/target/debug/client
 
@@ -23,6 +23,6 @@ COPY udev-rules/ /etc/udev/rules.d/
 
 COPY wpe-init /wpe-init
 
-CMD [ "/wpe-init" ]
-
 ENV WPE_URL="www.google.com"
+
+CMD [ "/wpe-init" ]
