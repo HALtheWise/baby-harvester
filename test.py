@@ -3,29 +3,40 @@ from selenium.webdriver.chrome.options import Options
 import os
 from Adafruit_Thermal import *
 from serial.serialutil import SerialException
-import pika, os
+import paho.mqtt.client as mqtt
+from urllib.parse import urlparse
 
 try:
     printer = Adafruit_Thermal("/dev/serial0", 9600, timeout=5)
 except SerialException:
     print("Problem accessing printer")
 
-url = os.environ["CLOUDAMQP_URL"]
-params = pika.URLParameters(url)
-connection = pika.BlockingConnection(params)
-channel = connection.channel() # start a channel
+mqtt_url = os.environ["MQTT_URL"]
+mqtt_user = os.environ["MQTT_USER"]
+mqtt_pass = os.environ["MQTT_PASS"]
 
-#channel.queue_declare(queue='amq.harvey/print/text')
+conn_url = urlparse(mqtt_url)
 
-def callback(ch, method, properties, body):
-  print(" [x] Received %r" % body)
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
 
-channel.basic_consume(callback,
-                      queue='amq.harvey/print/text',
-                      no_ack=True)
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("harvey/print/text")
 
-print(' [*] Waiting for messages:')
-channel.start_consuming()
+# The callback for when a PUBLISH message is received from the server.
+def on_message(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
+
+client = mqtt.Client(client_id="testlaptop")
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.username_pw_set(mqtt_user, password=mqtt_pass)
+print('connecting...')
+client.connect(conn_url.hostname, conn_url.port, 60)
+print('connected')
+client.loop_forever()
 
 #chrome_options = Options()
 #chrome_options.add_argument("--kiosk")
