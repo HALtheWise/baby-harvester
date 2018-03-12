@@ -10,9 +10,7 @@ verify_ssl = true
 selenium = "*"
 gpiozero = "*"
 paho-mqtt = "*"
-pika = "*"
 adafruit-thermal = "*"
-hbmqtt = "*"
 
 
 [dev-packages]
