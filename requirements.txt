@@ -1,0 +1,4 @@
+selenium
+Adafruit_Thermal
+paho-mqtt
+hbmqtt
