@@ -14,8 +14,8 @@ except SerialException:
     print("Problem accessing printer")
 
 mqtt_url = os.environ["MQTT_URL"]
-mqtt_user = os.environ["MQTT_USER"]
-mqtt_pass = os.environ["MQTT_PASS"]
+# mqtt_user = os.environ["MQTT_USER"]
+# mqtt_pass = os.environ["MQTT_PASS"]
 
 conn_url = urlparse(mqtt_url)
 
@@ -23,7 +23,7 @@ C = MQTTClient()
 
 @asyncio.coroutine
 def test_coro():
-   yield from C.connect(uri=mqtt_url, username=mqtt_user, password=mqtt_pass)
+   yield from C.connect(uri=mqtt_url)
    yield from C.subscribe([
              ('harvey/print/text', QOS_1),
              ('harvey/display/url', QOS_1),
