@@ -33,6 +33,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.username_pw_set(mqtt_user, password=mqtt_pass)
+client.enable_logger(logger=None)
 print('connecting...')
 client.connect(conn_url.hostname, conn_url.port, 60)
 print('connected')

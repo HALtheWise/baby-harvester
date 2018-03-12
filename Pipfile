@@ -12,6 +12,7 @@ gpiozero = "*"
 paho-mqtt = "*"
 pika = "*"
 adafruit-thermal = "*"
+hbmqtt = "*"
 
 
 [dev-packages]
