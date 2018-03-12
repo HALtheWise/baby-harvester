@@ -31,6 +31,11 @@ pub fn change_token() {
         username: user,
         password: Some(passwd),
     };
+    // Consider reading this from environment variable too, in order to enable:
+    // * Developers/contributors can fork the repo and run it against their own
+    //   servers
+    // * Using a local server during integration testing
+    // * Using distinct servers for staging and production
     let mut response = client.get("https://baby-harvester-gateway.herokuapp.com/changetoken")
         .header(Authorization(credentials))
         .send()

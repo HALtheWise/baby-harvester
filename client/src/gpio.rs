@@ -35,6 +35,7 @@ impl GPIOHandler {
                 Some(gpio)
                 },
             Err(error) => {
+                // nice solution message!
                 println!("Error encountered, perhaps this is a laptop?, {}", error);
                 None
             }
@@ -43,9 +44,6 @@ impl GPIOHandler {
         println!("This device {} a Raspi", match gpio { Some(_)=>"is", None=>"is not"});
 
         GPIOHandler{gpio}
-
-
-
      }
 
     pub fn set_bell(&self, ringing: bool){
@@ -59,6 +57,7 @@ impl GPIOHandler {
                 gpio.write(LED_PIN, match on{true=>Level::High,false=>Level::Low})
             },
             &None=>{
+                // use from_bool (or a )
                 println!("Pretend I'm turning {} the light!", match on { true=>"on", false=>"off"})
             }
         }
@@ -66,6 +65,7 @@ impl GPIOHandler {
     }
 
     pub fn get_button(&self) -> bool{
+        // explain?
         false
     }
 

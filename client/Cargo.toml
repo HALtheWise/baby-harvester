@@ -1,7 +1,7 @@
 [package]
 name = "client"
 version = "0.1.0"
-authors = ["Eric Miller <eric@legoaces.org>"]
+authors = ["Eric Miller <eric@legoaces.org>"] # and…?
 
 [dependencies]
 

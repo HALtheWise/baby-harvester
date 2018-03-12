@@ -8,7 +8,6 @@ use std::time::Duration;
 use std::io::prelude::*;
 use printer::serial::prelude::*;
 
-
 const SERIAL_NAME:&str = "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0";
 
 
@@ -30,11 +29,13 @@ pub fn print_text<T: SerialPort>(port: &mut T, text: &str) -> io::Result<()> {
 
     port.write(text.as_bytes())?;
 
+    // explain?
     port.write(b"\n\n\n\n\n")?;
 
     Ok(())
 }
 
+// For code complete, delete or explain dead code
 
 //
 //pub struct Printer<T: SerialPort> {
