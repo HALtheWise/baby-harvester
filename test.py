@@ -16,7 +16,7 @@ driver = webdriver.Chrome(chrome_options=chrome_options)
 _PRINTER_PORT = "usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0".encode()
 
 try:
-    printer = Adafruit_Thermal(port=_PRINTER_PORT, baudrate=9600, timeout=5)
+    printer = Adafruit_Thermal(port="/dev/ttyUSB0".encode(), baudrate=9600, timeout=5)
 except SerialException:
     print("Problem accessing printer")
 
@@ -37,11 +37,11 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+body)
     if msg.topic == (dev_name + "/print/text"):
         print("printing")
-        #printer.println(body+"\\n")
-        #printer.feed(3)
-        with open(str(_PRINTER_PORT), "w") as printbuf:
-            printbuf.write(body+"\\n")
-            printbuf.write("\\n\\n")
+        printer.println(body+"\\n")
+        printer.feed(3)
+        #with open(str(_PRINTER_PORT), "w") as printbuf:
+        #    printbuf.write(body+"\\n")
+        #    printbuf.write("\\n\\n")
         print("printed")
     if msg.topic == (dev_name + "/display/url"):
         print(body)
