@@ -43,7 +43,7 @@ driver = webdriver.Chrome(chrome_options=chrome_options)
 
 _HOMESCREEN = """
 <div style="width: 100%; height: 100%; text-align: center;font-size: 70;">
-<img style="height: 100%; margin: auto;" src="https://halthewise.github.io/baby-harvester/homescreen.svg"/>
+<img style="height: 100%; margin: auto;" src="https://halthewise.github.io/baby-harvester/homescreen.png"/>
 </div>
 """
 
