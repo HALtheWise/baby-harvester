@@ -10,7 +10,7 @@ function submitted() {
 		  type: "POST",
 		  url: "https://baby-harvester-gateway.herokuapp.com/display/url",
 		  dataType: 'json',
-		  async: false,
+		  async: true,
 		  headers: {
 		    "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
 		  },
@@ -23,8 +23,8 @@ function submitted() {
 		  success: function (){
 		    alert('Thanks for your comment!'); 
 		  },
-		  failure: function(){
-		  	alert('Something went wrong');
+		  error: function(){
+		  	alert('Something went wrong, do you have the correct token?');
 		  }
 		});
 
