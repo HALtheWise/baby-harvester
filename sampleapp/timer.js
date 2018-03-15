@@ -36,6 +36,7 @@ $( document ).ready(
 				window.requestAnimationFrame(animate);
 			} else {
 				$('#time').text("Time's Up!");
+				$('#time').parent().addClass('done');
 			}
 		}
 
