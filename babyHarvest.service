@@ -1,0 +1,16 @@
+[Unit]
+Description=Baby Harvester
+After=graphical.target
+
+[Service]
+Type=idle
+User=pi
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=BabyHarvester
+Environment="DISPLAY=:0.0"
+Environment="XAUTHORITY=/home/pi/.Xauthority"
+ExecStart=/bin/bash -c "source /home/pi/baby-harvester/env.local&&/usr/bin/python3 /home/pi/baby-harvester/test.py"
+
+[Install]
+WantedBy=graphical.target
