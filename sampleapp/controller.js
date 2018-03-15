@@ -7,7 +7,7 @@ function submitted() {
 
 	$.ajax
 		({
-		  type: "GET",
+		  type: "POST",
 		  url: "https://baby-harvester-gateway.herokuapp.com/display/url",
 		  dataType: 'json',
 		  async: false,
@@ -17,6 +17,9 @@ function submitted() {
 		  data: JSON.stringify({
 		  	'message':'https://halthewise.github.io/baby-harvester/sampleapp/timer.html?duration='+duration
 		  }),
+	      'processData': false,
+	      'contentType': 'application/json',
+		  
 		  success: function (){
 		    alert('Thanks for your comment!'); 
 		  },
