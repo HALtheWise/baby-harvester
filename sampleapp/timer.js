@@ -13,7 +13,7 @@ $( document ).ready(
 		console.log("Hello World");
 
 		try{
-			duration = parseInt($.urlparam('duration'));
+			duration = parseInt($.urlParam('duration'));
 		} catch(err){
 			duration = 10;
 		}
