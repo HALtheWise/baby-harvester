@@ -32,6 +32,7 @@ def on_connect(client, userdata, flags, rc):
 
     client.subscribe(dev_name + "/print/text")
     client.subscribe(dev_name + "/display/url")
+    client.subscribe(dev_name + "/changetoken")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -49,12 +50,13 @@ def on_message(client, userdata, msg):
         print(body)
         driver.get(body)
     elif msg.topic == (dev_name + "/changetoken"):
-        changetoken()
+        change_token()
     else:
         pass
 
 def change_token():
-    requests.get('https://baby-harvester-gateway.herokuapp.com', auth=(dev_name, app_secret))
+    """Should hit the gateway, and the gateway will return a print of the new auth token"""
+    requests.get('https://baby-harvester-gateway.herokuapp.com/changetoken', auth=(dev_name, app_secret))
 
 client = mqtt.Client(client_id=dev_name)
 client.on_connect = on_connect

@@ -11,6 +11,7 @@ selenium = "*"
 gpiozero = "*"
 paho-mqtt = "*"
 adafruit-thermal = "*"
+requests = "*"
 
 
 [dev-packages]
