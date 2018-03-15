@@ -23,8 +23,10 @@ function submitted() {
 		  success: function (){
 		    alert('Thanks for your comment!'); 
 		  },
-		  error: function(){
-		  	alert('Something went wrong, do you have the correct token?');
+		  error: function(xhr){
+		  	if (xhr.status != 200){
+			  	alert('Something went wrong, do you have the correct token?');
+			  }
 		  }
 		});
 
