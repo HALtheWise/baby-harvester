@@ -10,17 +10,28 @@ from subprocess import run
 import requests
 from gpiozero import Button
 
+# Monkey patch Adadruit_Thermal
+old_write = Adafruit_Thermal.write
+
+
+def newWrite(self, *data):
+    data = [s.encode() for s in data]
+    old_write(self, *data)
+
+
+Adafruit_Thermal.write = newWrite
+
 chrome_options = Options()
 chrome_options.add_argument("--kiosk")
 chrome_options.add_argument("--disable-infobars")
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
-_PRINTER_PORT = "usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0".encode()
+_PRINTER_PORT = "usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0"
 
 try:
-    printer = Adafruit_Thermal(port="/dev/ttyUSB0".encode(), baudrate=9600, timeout=5)
-except SerialException:
-    print("Problem accessing printer")
+    printer = Adafruit_Thermal(str("/dev/serial/by-id/{}".format(_PRINTER_PORT)), 9600, timeout=5)
+except SerialException as e:
+    print("Problem accessing printer", e)
 
 mqtt_url = str(os.environ["MQTT_URL"])
 dev_name = str(os.environ["DEVICE_NAME"])
@@ -41,20 +52,21 @@ button.when_released = change_token
 button.when_held = shutdown
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    print("Connected with result code " + str(rc))
 
     client.subscribe(dev_name + "/print/text")
     client.subscribe(dev_name + "/display/url")
 
+
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     body = msg.payload.decode('utf-8')
-    print(msg.topic+" "+body)
+    print(msg.topic + " " + body)
     if msg.topic == (dev_name + "/print/text"):
         print("printing")
-        printer.println(body+"\\n")
+        printer.println(body + "\\n")
         printer.feed(3)
-        #with open(str(_PRINTER_PORT), "w") as printbuf:
+        # with open(str(_PRINTER_PORT), "w") as printbuf:
         #    printbuf.write(body+"\\n")
         #    printbuf.write("\\n\\n")
         print("printed")
@@ -65,14 +77,14 @@ def on_message(client, userdata, msg):
         pass
 
 
+
 client = mqtt.Client(client_id=dev_name)
 client.on_connect = on_connect
 client.on_message = on_message
 
 client.username_pw_set(conn_url.username, password=conn_url.password)
-#client.enable_logger(logger=None)
+# client.enable_logger(logger=None)
 print('connecting...')
 client.connect(conn_url.hostname, conn_url.port, 60)
 print('connected')
 client.loop_forever()
-
