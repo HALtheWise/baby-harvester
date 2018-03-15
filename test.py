@@ -7,10 +7,11 @@ from serial.serialutil import SerialException
 import paho.mqtt.client as mqtt
 from urllib.parse import urlparse
 from subprocess import run
-
+import requests
 
 chrome_options = Options()
 chrome_options.add_argument("--kiosk")
+chrome_options.add_argument("--disable-infobars")
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
 _PRINTER_PORT = "usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0".encode()
@@ -22,6 +23,7 @@ except SerialException:
 
 mqtt_url = str(os.environ["MQTT_URL"])
 dev_name = str(os.environ["DEVICE_NAME"])
+app_secret = str(os.environ["APP_SECRET"])
 
 conn_url = urlparse(mqtt_url)
 
@@ -43,11 +45,16 @@ def on_message(client, userdata, msg):
         #    printbuf.write(body+"\\n")
         #    printbuf.write("\\n\\n")
         print("printed")
-    if msg.topic == (dev_name + "/display/url"):
+    elif msg.topic == (dev_name + "/display/url"):
         print(body)
         driver.get(body)
+    elif msg.topic == (dev_name + "/changetoken"):
+        changetoken()
     else:
         pass
+
+def change_token():
+    requests.get('https://baby-harvester-gateway.herokuapp.com', auth=(dev_name, app_secret))
 
 client = mqtt.Client(client_id=dev_name)
 client.on_connect = on_connect
