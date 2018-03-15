@@ -83,7 +83,7 @@ def on_message(client, userdata, msg):
     print(msg.topic + " " + body)
     if msg.topic == (dev_name + "/print/text"):
         print("printing")
-        printer.println(body + "\\n")
+        printer.println(body)
         printer.feed(3)
         # with open(str(_PRINTER_PORT), "w") as printbuf:
         #    printbuf.write(body+"\\n")
