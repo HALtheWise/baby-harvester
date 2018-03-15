@@ -96,6 +96,8 @@ def on_message(client, userdata, msg):
     elif msg.topic == (dev_name + "/display/url"):
         print(body)
         driver.get(body)
+    elif msg.topic == (dev_name + "/display/clear"):
+        driver.get(_HOMESCREEN_URL)
     else:
         pass
 
