@@ -18,8 +18,18 @@ def newWrite(self, *data):
     data = [s.encode() for s in data]
     old_write(self, *data)
 
+def newWriteBytes(self, *args):
+    if self.writeToStdout:
+        for arg in args:
+            sys.stdout.write(chr(arg))
+    else:
+        self.timeoutWait()
+        self.timeoutSet(len(args) * self.byteTime)
+        for arg in args:
+            super(Adafruit_Thermal, self).write([arg])
 
 Adafruit_Thermal.write = newWrite
+Adafruit_Thermal.writeBytes = newWriteBytes
 
 chrome_options = Options()
 chrome_options.add_argument("--kiosk")
