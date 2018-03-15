@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 from urllib.parse import urlparse
 from subprocess import run
 import requests
+import base64
 
 try:
     from gpiozero import Button
@@ -40,8 +41,11 @@ chrome_options.add_argument("--kiosk")
 chrome_options.add_argument("--disable-infobars")
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
-# Created from homescreen.html using http://dataurl.net/#dataurlmaker
-_HOMESCREEN_URL = "data:text/html;base64,PGRpdiBzdHlsZT0id2lkdGg6IDEwMCU7IGhlaWdodDogMTAwJTsgdGV4dC1hbGlnbjogY2VudGVyO2ZvbnQtc2l6ZTogMTAwO3BhZGRpbmctdG9wOiAyMCUiPldlbGNvbWUgdG8gdGhlPGJyPkJhYnkgSGFydmVzdGVyITwvZGl2Pg=="
+_HOMESCREEN = """
+<div style="width: 100%; height: 100%; text-align: center;font-size: 70;padding-top: 20%">Welcome to the<br>Baby Harvester!</div>
+"""
+
+_HOMESCREEN_URL = "data:text/html;base64," + base64.b64encode(_HOMESCREEN.encode()).decode()
 if _HOMESCREEN_URL:
     driver.get(_HOMESCREEN_URL)
 
