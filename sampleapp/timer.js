@@ -8,14 +8,43 @@ function now() {
 	return (new Date()).getTime() / 1000.0
 }
 
+function print(name, token) {
+	console.log('Submitted!')
+
+	$.ajax
+		({
+		  type: "POST",
+		  url: "https://baby-harvester-gateway.herokuapp.com/print/text",
+		  dataType: 'json',
+		  async: false,
+		  headers: {
+		    "Authorization": "Basic " + btoa(name + ":" + token)
+		  },
+		  data: JSON.stringify({
+		  	'message':'Time\'s Up!'
+		  }),
+	      'processData': false,
+	      'contentType': 'application/json'
+		});
+
+	return false;
+}
+
 $( document ).ready(
 	function() {
 		console.log("Hello World");
 
 		try{
-			duration = parseInt($.urlParam('duration'));
+			var duration = parseInt($.urlParam('duration'));
 		} catch(err){
-			duration = 10;
+			var duration = 10;
+		}
+		try{
+			var name = $.urlParam('name');
+			var token = $.urlParam('token');
+		} catch(err){
+			var name = "";
+			var token = "";
 		}
 		console.log(duration);
 
@@ -37,6 +66,7 @@ $( document ).ready(
 			} else {
 				$('#time').text("Time's Up!");
 				$('#time').parent().addClass('done');
+				print(name, token);
 			}
 		}
 
