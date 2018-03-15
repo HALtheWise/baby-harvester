@@ -8,7 +8,11 @@ import paho.mqtt.client as mqtt
 from urllib.parse import urlparse
 from subprocess import run
 import requests
-from gpiozero import Button
+
+try:
+    from gpiozero import Button
+except Exception:
+    print("Unable to start GPIO")
 
 # Monkey patch Adadruit_Thermal
 old_write = Adafruit_Thermal.write
@@ -35,6 +39,11 @@ chrome_options = Options()
 chrome_options.add_argument("--kiosk")
 chrome_options.add_argument("--disable-infobars")
 driver = webdriver.Chrome(chrome_options=chrome_options)
+
+# Created from homescreen.html using http://dataurl.net/#dataurlmaker
+_HOMESCREEN_URL = "data:text/html;base64,PGRpdiBzdHlsZT0id2lkdGg6IDEwMCU7IGhlaWdodDogMTAwJTsgdGV4dC1hbGlnbjogY2VudGVyO2ZvbnQtc2l6ZTogNTAiPldlbGNvbWUgdG8gdGhlIEJhYnkgSGFydmVzdGVyITwvZGl2Pg=="
+if _HOMESCREEN_URL:
+    driver.get(_HOMESCREEN_URL)
 
 _PRINTER_PORT = "usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0"
 
