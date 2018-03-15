@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 from urllib.parse import urlparse
 from subprocess import run
 import requests
+from gpiozero import Button
 
 chrome_options = Options()
 chrome_options.add_argument("--kiosk")
@@ -27,12 +28,23 @@ app_secret = str(os.environ["APP_SECRET"])
 
 conn_url = urlparse(mqtt_url)
 
+def change_token():
+    """Should hit the gateway, and the gateway will return a print of the new auth token"""
+    print("changing token")
+    requests.get('https://baby-harvester-gateway.herokuapp.com/changetoken', auth=(dev_name, app_secret))
+
+def shutdown():
+        run(['sudo', 'poweroff'])
+
+button = Button(2, hold_time=3)
+button.when_released = change_token
+button.when_held = shutdown
+
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
 
     client.subscribe(dev_name + "/print/text")
     client.subscribe(dev_name + "/display/url")
-    client.subscribe(dev_name + "/changetoken")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -49,14 +61,9 @@ def on_message(client, userdata, msg):
     elif msg.topic == (dev_name + "/display/url"):
         print(body)
         driver.get(body)
-    elif msg.topic == (dev_name + "/changetoken"):
-        change_token()
     else:
         pass
 
-def change_token():
-    """Should hit the gateway, and the gateway will return a print of the new auth token"""
-    requests.get('https://baby-harvester-gateway.herokuapp.com/changetoken', auth=(dev_name, app_secret))
 
 client = mqtt.Client(client_id=dev_name)
 client.on_connect = on_connect
