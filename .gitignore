@@ -131,3 +131,5 @@ ENV/
 
 #Chromedriver
 chromedriver
+
+*.png

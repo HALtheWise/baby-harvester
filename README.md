@@ -1,42 +1,5 @@
-# BabyHarvesterHack
+In the Olin College Library, we have a tool called the Idea Harvester. The Idea Harvester is about the height of a person, rolls around on caster wheels, and has a variety of features - including an HDMI-enabled screen, a roll of butcher paper, a light, a soldering arm, and a bell.
 
-#Deployment environment
-You will need to install packages manually, as pipenv is a little buggy on raspi:
-```shell
-$ sudo apt install python3-gpiozero python3-requests
-```
+For this project, we set out to build a Baby Harvester: a mini version of the Idea Harvester. The Baby Harvester stands a little over 10 inches tall and sports a [2.4” PiTFT screen](https://learn.adafruit.com/adafruit-2-4-pitft-hat-with-resistive-touchscreen-mini-kit?view=all), a [thermal printer](https://learn.adafruit.com/mini-thermal-receipt-printer?view=all), and a button, all connected to a RasPi 3 that sits on the bottom. The Baby Harvester is a platform, meant to enable all kinds of printer and/or screen usage. Outside developers can write apps for the Baby Harvester, as demonstrated [by our sample app](https://github.com/songbird175/harvester-sampleapp).
 
-Also disable the Raspbian screensaver like [this](https://www.raspberrypi.org/forums/viewtopic.php?t=57552). E.G. add the following lines to `/etc/xdg/lxsession/LXDE-pi/autostart`:
-```shell
-@xset s noblank 
-@xset s off 
-@xset -dpms
-```
-
-### run on startup
-And set the script to run when the DE starts by appending the following to `/home/pi/.config/lxsession/LXDE-pi/autostart`:
-```
-@source /home/pi/baby-harvester/env.local
-@python3 /home/pi/baby-harvester/test.py
-```
-
-### unit file
-For fast testing, there's also a systemd unit file. Comment out the lines in LXDE autostart, and do the following:
-```
-$ sudo cp ./babyHarvest.service /lib/systemd/system/
-$ sudo systectl daemon-reload
-```
-You may then start or stop the service via systemctl, e.g.
-```
-$ sudo systemctl start babyHarvest.service
-```
-
-
-## Local development
-
-For dependency resolution:
-```
-$ pipenv install
-```
-
-Also install chromedriver.
+More information can be found in [our wiki](https://github.com/HALtheWise/baby-harvester/wiki).
