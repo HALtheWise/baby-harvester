@@ -42,7 +42,9 @@ chrome_options.add_argument("--disable-infobars")
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
 _HOMESCREEN = """
-<div style="width: 100%; height: 100%; text-align: center;font-size: 70;padding-top: 20%">Welcome to the<br>Baby Harvester!</div>
+<div style="width: 100%; height: 100%; text-align: center;font-size: 70;">
+<img style="height: 100%; margin: auto;" src="https://halthewise.github.io/baby-harvester/homescreen.svg"/>
+</div>
 """
 
 _HOMESCREEN_URL = "data:text/html;base64," + base64.b64encode(_HOMESCREEN.encode()).decode()
@@ -96,6 +98,8 @@ def on_message(client, userdata, msg):
     elif msg.topic == (dev_name + "/display/url"):
         print(body)
         driver.get(body)
+    elif msg.topic == (dev_name + "/display/clear"):
+        driver.get(_HOMESCREEN_URL)
     else:
         pass
 
