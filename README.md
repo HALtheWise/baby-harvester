@@ -9,3 +9,5 @@ For this project, we set out to build a Baby Harvester: a mini version of the Id
 **Documentation can be found in [our wiki](https://github.com/HALtheWise/baby-harvester/wiki).**
 
 This project was completed for a class called [Hacking the Library](https://hackingthelibrary.org/), taught at Olin College of Engineering in the Spring of 2018 by Oliver Steele and Jeff Goldenson.
+
+![gif](https://imgur.com/8v5Mcst.gif)
